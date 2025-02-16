@@ -3,7 +3,7 @@ import cn from "../../../util/cn";
 interface CheckBoxType {
     value: boolean,
     toggleFunc: () => void,
-    className: string
+    className?: string
 }
 
 export default function Checkbox({value, toggleFunc, className}: CheckBoxType) {

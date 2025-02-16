@@ -34,7 +34,7 @@ export default function TaskSchedular({ className }: TaskSchedularProps) {
             )}>
                 {
                     currentTasks.length ? 
-                        currentTasks.map(task => <CurrentTask task={task} />) : 
+                        currentTasks.map(task => <CurrentTask task={task} key={task.id} />) : 
                     <p className="text-center text-sm text-neutral-400">There are no tasks yet. Click 'Add Task' to create one.</p>
                 }
             </div>

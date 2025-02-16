@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faTimes } from "@fortawesome/free-solid-svg-icons";
 import InputField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
+import Checkbox from "../general/input/Checkbox";
 
 export default function AcidLab() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
@@ -23,6 +24,7 @@ export default function AcidLab() {
         
         remainingConvertingTime,
         remainingFillingTime,
+
     } = useAcidLab();
 
     useEffect(() => {
@@ -81,7 +83,19 @@ export default function AcidLab() {
 }
 
 export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }) {
-    const { supplies, currentValue, maxValue, editSupplies, editValue } = useAcidLab();
+    const {
+        supplies,
+        currentValue,
+        maxValue,
+        editSupplies,
+        editValue,
+
+        hasCustomName,
+        toggleCustomName,
+
+        hasEquipmentUpgrade,
+        toggleEquipmentUpgrade
+    } = useAcidLab();
     const [editProductValue, setEditProductValue] = useState<number>(Number(currentValue.toFixed(2)));
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
 
@@ -99,6 +113,17 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
                 <h2 className="text-lg font-semibold text-white mb-4">Acid Lab Settings</h2>
 
                 <div className="flex flex-col gap-1">
+                    <div className="mb-2">
+                        <div className="flex items-center gap-2">
+                            <Checkbox value={hasEquipmentUpgrade} toggleFunc={() => toggleEquipmentUpgrade()} />
+                            <p>Equipment Upgrade</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Checkbox value={hasCustomName} toggleFunc={() => toggleCustomName()} />
+                            <p>Custom Name</p>
+                        </div>
+                    </div>
+                    
                     {/* Supply Input */}
                     <div className="flex gap-1">
                         <InputField
