@@ -13,7 +13,7 @@ export default function RangeBars({ bars, percentage, className }: RangeBarsProp
             <div
                 key={index}
                 className={cn(
-                    "h-2 flex-1 rounded-full",
+                    "h-2 flex-1",
                     ((index + 1) / bars) <= percentage
                     ? "bg-green-500"
                     : "bg-neutral-900"

@@ -44,7 +44,7 @@ export default function AcidLab() {
                     <p className="w-15 font-semibold text-sm">
                         Supplies
                     </p>
-                    <RangeBars bars={5} percentage={supplies} className="flex-1" />
+                    <RangeBars bars={5} percentage={supplies / 100} className="flex-1" />
                     <p className="w-25 text-sm jetbrains-mono">
                         {supplies.toFixed(2)}%
                     </p>
