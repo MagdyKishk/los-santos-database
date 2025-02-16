@@ -1,6 +1,6 @@
 import cn from "../../util/cn";
 import useOnline from "../../zustand/online";
-import Checkbox from "../general/input/checkbox";
+import Checkbox from "../general/input/Checkbox";
 
 interface BussinessContainerProps {
     bussinessName: string;
