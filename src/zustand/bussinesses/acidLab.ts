@@ -23,7 +23,6 @@ interface AcidLabStore {
     CheckingInterval: number | null;
     updateEvery: number;
 
-
     hasEquipmentUpgrade: boolean,
     hasCustomName: boolean,
 
@@ -155,7 +154,6 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
         }))
         currentState.saveToLocalStorage()
     },
-
     toggleCustomName: (on?: boolean) => {
         const currentState = get();
         const { hasCustomName, hasEquipmentUpgrade, maxTimeToFill, currentValue } = currentState;

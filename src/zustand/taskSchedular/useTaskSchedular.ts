@@ -34,7 +34,8 @@ const useTaskSchedular = create<TaskSchedularStore>((set, get) => ({
 
     toggleOptionalTasksMenu: () => {
         set((state) => ({
-            optionalTasksMenuOpen: !state.optionalTasksMenuOpen
+            optionalTasksMenuOpen: !state.optionalTasksMenuOpen,
+            filteredTasks: defaultOptionalTasks,
         }))
     },
 

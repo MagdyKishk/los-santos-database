@@ -44,7 +44,7 @@ export default function AcidLab() {
                     <p className="w-15 font-semibold text-sm">
                         Supplies
                     </p>
-                    <RangeBars bars={5} percentage={96} className="flex-1" />
+                    <RangeBars bars={5} percentage={supplies} className="flex-1" />
                     <p className="w-25 text-sm jetbrains-mono">
                         {supplies.toFixed(2)}%
                     </p>
@@ -66,7 +66,7 @@ export default function AcidLab() {
                 </div>
             </div>
             {/* Settings Button */}
-            <button className="absolute top-2 right-2 p-2 z-50">
+            <button className="absolute top-2 right-2 p-2">
                 <FontAwesomeIcon
                     icon={faGear}
                     className="w-5 h-5 text-white/50 hover:text-white transition-colors cursor-pointer"
