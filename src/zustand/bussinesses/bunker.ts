@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import useOnline from "../online";
 
-interface AcidLabStore {
+interface BunkerStore {
     isActive: boolean
 
     supplies: number,
@@ -24,7 +24,7 @@ interface AcidLabStore {
     updateEvery: number;
 
     hasEquipmentUpgrade: boolean,
-    hasCustomName: boolean,
+    hasStaffUpgrade: boolean,
 
     toggleActive: () => void;
     startProduction: () => void;
@@ -34,20 +34,20 @@ interface AcidLabStore {
     editValue: (newValue: number) => void;
 
     toggleEquipmentUpgrade: (on?: boolean) => void;
-    toggleCustomName: (on?: boolean) => void;
+    toggleStaffUpgrade: (on?: boolean) => void;
 
     saveToLocalStorage: () => void;
     loadFromLocalStorage: () => void;
     initBusiness: () => void;
 }
 
-const useAcidLab = create<AcidLabStore>((set, get) => ({
+const useBunker = create<BunkerStore>((set, get) => ({
     isActive: false,
  
     supplies: 100,
 
     currentValue: 0,
-    maxValue: 237_600,
+    maxValue: 750_000,
 
     finishConvertingTime: 0,
     finishFillingTime: 0,
@@ -55,8 +55,8 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
     remainingConvertingTime: 0,
     remainingFillingTime: 0,
 
-    maxTimeToConvert: 7_200_000,
-    maxTimeToFill: 21_600_000,
+    maxTimeToConvert: 6_000_000,
+    maxTimeToFill: 61_200_000,
 
     lastUpdate: 0,
 
@@ -64,7 +64,7 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
     updateEvery: 1,
 
     hasEquipmentUpgrade: false,
-    hasCustomName: false,
+    hasStaffUpgrade: false,
 
     toggleActive: () => {
         const state = get();
@@ -133,44 +133,53 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
 
     toggleEquipmentUpgrade: (on) => {
         const currentState = get();
-        const { hasEquipmentUpgrade, hasCustomName, currentValue } = currentState;
+        const { hasEquipmentUpgrade, currentValue } = currentState;
 
         const newHasEquipmentUpgrade = on == undefined ? !hasEquipmentUpgrade : on;
 
         const newMaxValue = newHasEquipmentUpgrade
-            ? hasCustomName ? 351_000 : 335_200
-            : hasCustomName ? 249_440 : 237_600;
+            ? 1_050_000
+            : 750_000;
 
-        const newMaxTtimeToFill = newHasEquipmentUpgrade ? 14_400000: 21_600000
+        const newTimeToFill = Date.now() + (currentState.maxTimeToFill * (1 - (currentValue / newMaxValue)));
 
-        const newTimeToFill = Date.now() + (newMaxTtimeToFill * (1 - (currentValue / newMaxValue)));
+        const newMaxTimeToConvert = newHasEquipmentUpgrade
+            ? 100 * 60 * 1000
+            : 140 * 60 * 1000;
+        
+        const newRemainginToConvert = (newMaxTimeToConvert * (currentState.supplies / 100))
+        const newTimeToConvert = Date.now() + newRemainginToConvert
 
         set((state) => ({
             ...state,
             maxValue: newMaxValue,
-            maxTimeToFill: newMaxTtimeToFill,
+            maxTimeToConvert: newMaxTimeToConvert,
             finishFillingTime: newTimeToFill,
-            hasEquipmentUpgrade: newHasEquipmentUpgrade
+            finishConvertingTime: newTimeToConvert,
+            hasEquipmentUpgrade: newHasEquipmentUpgrade,
+            remainingConvertingTime: newRemainginToConvert
         }))
         currentState.saveToLocalStorage()
     },
-    toggleCustomName: (on?: boolean) => {
+    toggleStaffUpgrade: (on?: boolean) => {
         const currentState = get();
-        const { hasCustomName, hasEquipmentUpgrade, maxTimeToFill, currentValue } = currentState;
+        const { hasStaffUpgrade: hasStaffUpgrade, currentValue } = currentState;
         
-        const newHasCustomName = on === undefined ? !hasCustomName : on;
+        const newHasStaffUpgrade = on === undefined ? !hasStaffUpgrade : on;
         
-        const newMaxValue = newHasCustomName
-        ? hasEquipmentUpgrade ? 351_000 : 249_440
-        : hasEquipmentUpgrade ? 335_200 : 237_600;
+        const newMaxTimeToFill = newHasStaffUpgrade
+            ? 43_200_000 
+            : 61_200_000;
         
-        const newTimeToFill = Date.now() + (maxTimeToFill * (1 - (currentValue / newMaxValue)));
+        const newRemainginToFill = (newMaxTimeToFill * (1 - (currentValue / currentState.maxValue)));
+        const newTimeToFill = Date.now() + newRemainginToFill;
         
         set((state) => ({
             ...state,
-            maxValue: newMaxValue,
+            maxTimeToFill: newMaxTimeToFill,
             finishFillingTime: newTimeToFill,
-            hasCustomName: newHasCustomName,
+            hasStaffUpgrade: newHasStaffUpgrade,
+            remainingFillingTime: newRemainginToFill,
         }));
         currentState.saveToLocalStorage()
     },
@@ -201,7 +210,6 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
         }))
     },
 
-    // Handel localstorage
     saveToLocalStorage: () => {
         const {
             isActive,
@@ -224,8 +232,8 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasCustomName,
-        } = useAcidLab.getState();
+            hasStaffUpgrade,
+        } = useBunker.getState();
 
         const data = {
             isActive,
@@ -248,14 +256,14 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasCustomName,
+            hasStaffUpgrade,
         };
 
-        localStorage.setItem("acidlab_data", JSON.stringify(data));
+        localStorage.setItem("bunker_data", JSON.stringify(data));
     },
     loadFromLocalStorage: () => {
         try {
-            const data = localStorage.getItem("acidlab_data");
+            const data = localStorage.getItem("bunker_data");
             if (data) {
                 const {
                     isActive,
@@ -278,7 +286,7 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
                     updateEvery,
 
                     hasEquipmentUpgrade,
-                    hasCustomName,
+                    hasStaffUpgrade,
                 } = JSON.parse(data);
                 set((state) => ({
                     ...state,
@@ -295,14 +303,13 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
                     lastUpdate: lastUpdate != undefined ? lastUpdate : state.lastUpdate,
                     updateEvery: updateEvery != undefined ? updateEvery : state.updateEvery,
                     hasEquipmentUpgrade: hasEquipmentUpgrade != undefined ? hasEquipmentUpgrade : state.hasEquipmentUpgrade,
-                    hasCustomName: hasCustomName != undefined ? hasCustomName : state.hasCustomName,
+                    hasStaffUpgrade: hasStaffUpgrade != undefined ? hasStaffUpgrade : state.hasStaffUpgrade,
                 }));
             }
         } catch (error) {
             console.error("Error loading acidlab_data:", error);
         }
     },
-
     initBusiness: () => {
         get().loadFromLocalStorage();
         const {
@@ -319,4 +326,4 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
     },
 }))
 
-export default useAcidLab;
+export default useBunker;

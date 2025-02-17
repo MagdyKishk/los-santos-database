@@ -1,6 +1,7 @@
 import cn from "../../util/cn";
 import useOnline from "../../zustand/online";
 import AcidLab from "./AcidLab";
+import Bunker from "./Bunker";
 
 interface BussinessManagerProps {
     className?: string
@@ -26,11 +27,11 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
                     Bussiness Manager
                 </h1>
                 <button className={cn(
-                    "ml-auto px-2 py-1 rounded-full",
-                    "flex items-center justify-center",
-                    "text-xs",
-                    isOnline ? "bg-green-500" : "bg-red-500",
-                    "cursor-pointer"
+                        "ml-auto px-2 py-1 rounded-full",
+                        "flex items-center justify-center",
+                        "text-xs",
+                        isOnline ? "bg-green-500" : "bg-red-500",
+                        "cursor-pointer"
                     )}
                     onClick={toggleIsOnline}
                 >
@@ -43,6 +44,7 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
                 "grid grid-cols-1 xl:grid-cols-2 gap-4 py-4",
             )}>
                 <AcidLab />
+                <Bunker />
             </div>
         </div>
     )
