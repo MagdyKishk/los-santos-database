@@ -1,4 +1,5 @@
 import cn from "../../util/cn";
+import formatMoney from "../../util/formatMoney";
 import useOnline from "../../zustand/online";
 import Checkbox from "../general/input/Checkbox";
 
@@ -6,6 +7,7 @@ interface BussinessContainerProps {
     bussinessName: string;
     bussinessDescription: string;
     bussinessImage: string;
+    valuePerHour?: number;
 
     isActive: boolean;
     toggleActive: () => void;
@@ -17,6 +19,7 @@ export default function BussinessContainer({
     bussinessName,
     bussinessDescription,
     bussinessImage,
+    valuePerHour,
 
     isActive,
     toggleActive,
@@ -60,7 +63,14 @@ export default function BussinessContainer({
                                 isOnline? "peer-checked:border-green-500" : "peer-checked:border-yellow-500",
                             )}
                         />
-                        <h1 className="text-lg font-bold text-white">{ bussinessName }</h1>
+                        <h1 className="text-lg font-bold text-white">{bussinessName}</h1>
+                        {
+                            valuePerHour &&
+                            <p className="text-green-500 text-sm font-semibold">
+                                {formatMoney(valuePerHour)}
+                                /h
+                            </p>
+                        }
                     </div>
                     <p className="text-xs text-neutral-400">{ bussinessDescription }</p>
                 </div>

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import useOnline from "../online";
 
-interface BunkerStore {
+interface CocaineStore {
     isActive: boolean
 
     supplies: number,
@@ -26,7 +26,7 @@ interface BunkerStore {
     updateEvery: number;
 
     hasEquipmentUpgrade: boolean,
-    hasStaffUpgrade: boolean,
+    hasStaffpgrade: boolean,
 
     toggleActive: () => void;
     startProduction: () => void;
@@ -43,13 +43,13 @@ interface BunkerStore {
     initBusiness: () => void;
 }
 
-const useBunker = create<BunkerStore>((set, get) => ({
+const useCocaine = create<CocaineStore>((set, get) => ({
     isActive: false,
  
     supplies: 100,
 
     currentValue: 0,
-    maxValue: 750_000,
+    maxValue: 300_000,
 
     valuePerHours: 0,
 
@@ -60,7 +60,7 @@ const useBunker = create<BunkerStore>((set, get) => ({
     remainingFillingTime: 0,
 
     maxTimeToConvert: 6_000_000,
-    maxTimeToFill: 61_200_000,
+    maxTimeToFill: 30_000_000,
 
     lastUpdate: 0,
 
@@ -68,7 +68,7 @@ const useBunker = create<BunkerStore>((set, get) => ({
     updateEvery: 1,
 
     hasEquipmentUpgrade: false,
-    hasStaffUpgrade: false,
+    hasStaffpgrade: false,
 
     toggleActive: () => {
         const state = get();
@@ -140,54 +140,76 @@ const useBunker = create<BunkerStore>((set, get) => ({
 
     toggleEquipmentUpgrade: (on) => {
         const currentState = get();
-        const { hasEquipmentUpgrade, currentValue } = currentState;
+        const { hasEquipmentUpgrade, hasStaffpgrade, currentValue } = currentState;
 
         const newHasEquipmentUpgrade = on == undefined ? !hasEquipmentUpgrade : on;
 
         const newMaxValue = newHasEquipmentUpgrade
-            ? 1_050_000
-            : 750_000;
+            ? hasStaffpgrade ? 420_000 : 360_000
+            : hasStaffpgrade ? 360_000 : 300_000;
 
-        const newTimeToFill = Date.now() + (currentState.maxTimeToFill * (1 - (currentValue / newMaxValue)));
-
-        const newMaxTimeToConvert = newHasEquipmentUpgrade
-            ? 100 * 60 * 1000
-            : 140 * 60 * 1000;
+        const newMaxTtimeToFill = newHasEquipmentUpgrade
+            ? hasStaffpgrade ? 18_000_000 : 24_000_000
+            : hasStaffpgrade ? 24_000_000 : 30_000_000
         
-        const newRemainginToConvert = (newMaxTimeToConvert * (currentState.supplies / 100))
-        const newTimeToConvert = Date.now() + newRemainginToConvert
+        const newMaxTimeToConvert = newHasEquipmentUpgrade
+            ? hasStaffpgrade ? 7_200_000 : 9_600_000
+            : hasStaffpgrade ? 4_800_000 : 6_000_000
+
+        const newRemainginToFill = (newMaxTtimeToFill * (1 - (currentValue / newMaxValue))); 
+        const newRemainginToConvert = (newMaxTimeToConvert * (currentState.supplies / 100));
+        
+        const newTimeToFill = Date.now() + newRemainginToFill;
+        const newTimeToConvert = Date.now() + newRemainginToConvert;
 
         set((state) => ({
             ...state,
             maxValue: newMaxValue,
+            maxTimeToFill: newMaxTtimeToFill,
             maxTimeToConvert: newMaxTimeToConvert,
             finishFillingTime: newTimeToFill,
             finishConvertingTime: newTimeToConvert,
             hasEquipmentUpgrade: newHasEquipmentUpgrade,
-            remainingConvertingTime: newRemainginToConvert
+            remainingFillingTime: newRemainginToFill,
+            remainingConvertingTime: newRemainginToConvert,
         }))
         currentState.saveToLocalStorage()
     },
     toggleStaffUpgrade: (on?: boolean) => {
         const currentState = get();
-        const { hasStaffUpgrade: hasStaffUpgrade, currentValue } = currentState;
+        const { hasStaffpgrade, hasEquipmentUpgrade, currentValue } = currentState;
         
-        const newHasStaffUpgrade = on === undefined ? !hasStaffUpgrade : on;
+        const newHasStaffpgrade = on === undefined ? !hasStaffpgrade : on;
         
-        const newMaxTimeToFill = newHasStaffUpgrade
-            ? 43_200_000 
-            : 61_200_000;
+        const newMaxValue = newHasStaffpgrade
+            ? hasEquipmentUpgrade ? 420_000 : 360_000
+            : hasEquipmentUpgrade ? 360_000 : 300_000;
         
-        const newRemainginToFill = (newMaxTimeToFill * (1 - (currentValue / currentState.maxValue)));
+        const newMaxTtimeToFill = newHasStaffpgrade
+            ? hasEquipmentUpgrade ? 18_000_000 : 24_000_000
+            : hasEquipmentUpgrade ? 24_000_000 : 30_000_000;
+        
+        const newMaxTimeToConvert = newHasStaffpgrade
+            ? hasEquipmentUpgrade ? 7_200_000 : 4_800_000
+            : hasEquipmentUpgrade ? 9_600_000 : 6_000_000;
+        
+        const newRemainginToFill = (newMaxTtimeToFill * (1 - (currentValue / newMaxValue))); 
+        const newRemainginToConvert = (newMaxTimeToConvert * (currentState.supplies / 100));
+        
         const newTimeToFill = Date.now() + newRemainginToFill;
-        
+        const newTimeToConvert = Date.now() + newRemainginToConvert;
+
         set((state) => ({
             ...state,
-            maxTimeToFill: newMaxTimeToFill,
+            maxValue: newMaxValue,
+            maxTimeToFill: newMaxTtimeToFill,
+            maxTimeToConvert: newMaxTimeToConvert,
             finishFillingTime: newTimeToFill,
-            hasStaffUpgrade: newHasStaffUpgrade,
+            finishConvertingTime: newTimeToConvert,
+            hasStaffpgrade: newHasStaffpgrade,
             remainingFillingTime: newRemainginToFill,
-        }));
+            remainingConvertingTime: newRemainginToConvert,
+        }))
         currentState.saveToLocalStorage()
     },
 
@@ -217,6 +239,7 @@ const useBunker = create<BunkerStore>((set, get) => ({
         }))
     },
 
+    // Handel localstorage
     saveToLocalStorage: () => {
         const {
             isActive,
@@ -239,8 +262,8 @@ const useBunker = create<BunkerStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasStaffUpgrade,
-        } = useBunker.getState();
+            hasStaffpgrade,
+        } = get();
 
         const data = {
             isActive,
@@ -263,14 +286,14 @@ const useBunker = create<BunkerStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasStaffUpgrade,
+            hasStaffpgrade,
         };
 
-        localStorage.setItem("bunker_data", JSON.stringify(data));
+        localStorage.setItem("cocaine_data", JSON.stringify(data));
     },
     loadFromLocalStorage: () => {
         try {
-            const data = localStorage.getItem("bunker_data");
+            const data = localStorage.getItem("cocaine_data");
             if (data) {
                 const {
                     isActive,
@@ -293,7 +316,7 @@ const useBunker = create<BunkerStore>((set, get) => ({
                     updateEvery,
 
                     hasEquipmentUpgrade,
-                    hasStaffUpgrade,
+                    hasStaffpgrade,
                 } = JSON.parse(data);
                 set((state) => ({
                     ...state,
@@ -310,13 +333,14 @@ const useBunker = create<BunkerStore>((set, get) => ({
                     lastUpdate: lastUpdate != undefined ? lastUpdate : state.lastUpdate,
                     updateEvery: updateEvery != undefined ? updateEvery : state.updateEvery,
                     hasEquipmentUpgrade: hasEquipmentUpgrade != undefined ? hasEquipmentUpgrade : state.hasEquipmentUpgrade,
-                    hasStaffUpgrade: hasStaffUpgrade != undefined ? hasStaffUpgrade : state.hasStaffUpgrade,
+                    hasStaffpgrade: hasStaffpgrade != undefined ? hasStaffpgrade : state.hasStaffpgrade,
                 }));
             }
         } catch (error) {
             console.error("Error loading acidlab_data:", error);
         }
     },
+
     initBusiness: () => {
         get().loadFromLocalStorage();
         const {
@@ -333,4 +357,4 @@ const useBunker = create<BunkerStore>((set, get) => ({
     },
 }))
 
-export default useBunker;
+export default useCocaine;

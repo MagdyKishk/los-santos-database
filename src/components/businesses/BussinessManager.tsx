@@ -2,6 +2,7 @@ import cn from "../../util/cn";
 import useOnline from "../../zustand/online";
 import AcidLab from "./AcidLab";
 import Bunker from "./Bunker";
+import Cocaine from "./Cocaine";
 
 interface BussinessManagerProps {
     className?: string
@@ -17,7 +18,7 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
             "bg-neutral-900",
             "rounded-md",
             "flex flex-col",
-            className
+            className,
         )}>
             <div className="pb-4 px-2 flex items-center border-b border-neutral-800">
                 <h1 className={cn(
@@ -45,6 +46,7 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
             )}>
                 <AcidLab />
                 <Bunker />
+                <Cocaine />
             </div>
         </div>
     )

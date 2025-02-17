@@ -9,6 +9,8 @@ interface AcidLabStore {
     currentValue: number,
     maxValue: number,
 
+    valuePerHours: number,
+
     finishConvertingTime: number,
     finishFillingTime: number,
 
@@ -48,6 +50,8 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
 
     currentValue: 0,
     maxValue: 237_600,
+
+    valuePerHours: 0,
 
     finishConvertingTime: 0,
     finishFillingTime: 0,
@@ -121,12 +125,15 @@ const useAcidLab = create<AcidLabStore>((set, get) => ({
             productionFraction = Math.max(0, Math.min(1, productionFraction));
             const newCurrentValue = productionFraction * state.maxValue;
 
+            const newValuePerHour = (state.maxValue / state.maxTimeToFill * 1000 * 60 * 60) 
+
             return {
                 supplies: newSupplies,
                 currentValue: newCurrentValue,
                 lastUpdate: now,
                 remainingConvertingTime: Math.max(0, remainingConvertingTime),
                 remainingFillingTime: Math.max(0, remainingFillingTime),
+                valuePerHours: newValuePerHour,
             };
         });
     },

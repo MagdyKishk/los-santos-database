@@ -25,6 +25,7 @@ export default function AcidLab() {
         remainingConvertingTime,
         remainingFillingTime,
 
+        valuePerHours,
     } = useAcidLab();
 
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function AcidLab() {
             bussinessName="Acid Lab"
             bussinessImage="media/acid-lab.jpg"
             bussinessDescription="Modifies and delivers vehicles for customers. Also allows for mini-heists called Robbery Contracts for extra income."
+            valuePerHour={valuePerHours}
         >
             <div className="mt-4 flex flex-col gap-1">
                 <div className="flex items-center gap-2">

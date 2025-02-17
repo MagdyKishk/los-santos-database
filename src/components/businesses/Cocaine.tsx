@@ -7,9 +7,9 @@ import { faGear, faTimes } from "@fortawesome/free-solid-svg-icons";
 import InputField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
-import useBunker from "../../zustand/bussinesses/bunker";
+import useCocaine from "../../zustand/bussinesses/Cocaine";
 
-export default function Bunker() {
+export default function Cocaine() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
     const {
         isActive,
@@ -24,8 +24,8 @@ export default function Bunker() {
         
         remainingConvertingTime,
         remainingFillingTime,
-        valuePerHours,
-    } = useBunker();
+        valuePerHours
+    } = useCocaine();
 
     useEffect(() => {
         initBusiness()
@@ -35,10 +35,10 @@ export default function Bunker() {
         <BussinessContainer
             isActive={isActive}
             toggleActive={toggleActive}
-            bussinessName="Bunker"
-            bussinessImage="media/bunker.jpg"
-            bussinessDescription="Produces and sells illegal weapons. A high-profit, low-maintenance business with strong payouts and passive income potential."
+            bussinessName="Cocaine Lockup"
+            bussinessImage="media/cocaine-lockup.jpg"
             valuePerHour={valuePerHours}
+            bussinessDescription="The most profitable MC business, producing and selling cocaine. Requires resupplying and upgrades to maximize earnings."
         >
             <div className="mt-4 flex flex-col gap-1">
                 <div className="flex items-center gap-2">
@@ -77,13 +77,13 @@ export default function Bunker() {
                 />
             </button>
             {openSettings &&
-                <AcidLabSettings closeSettings={() => setOpenSettings(false)} />
+                <CocaineSettings closeSettings={() => setOpenSettings(false)} />
             }
         </BussinessContainer>
     )
 }
 
-export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }) {
+export function CocaineSettings({ closeSettings }: { closeSettings: () => void }) {
     const {
         supplies,
         currentValue,
@@ -91,12 +91,12 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
         editSupplies,
         editValue,
 
-        hasStaffUpgrade,
+        hasStaffpgrade,
         toggleStaffUpgrade,
 
         hasEquipmentUpgrade,
-        toggleEquipmentUpgrade
-    } = useBunker();
+        toggleEquipmentUpgrade,
+    } = useCocaine();
     const [editProductValue, setEditProductValue] = useState<number>(Number(currentValue.toFixed(2)));
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
 
@@ -111,7 +111,7 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
                     <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
                 </button>
 
-                <h2 className="text-lg font-semibold text-white mb-4">Bunker Settings</h2>
+                <h2 className="text-lg font-semibold text-white mb-4">Cocaine Lookup Settings</h2>
 
                 <div className="flex flex-col gap-1">
                     <div className="mb-2">
@@ -120,7 +120,7 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
                             <p>Equipment Upgrade</p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Checkbox value={hasStaffUpgrade} toggleFunc={() => toggleStaffUpgrade()} />
+                            <Checkbox value={hasStaffpgrade} toggleFunc={() => toggleStaffUpgrade()} />
                             <p>Staff Upgrade</p>
                         </div>
                     </div>
