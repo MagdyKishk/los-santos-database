@@ -74,7 +74,11 @@ const useBunker = create<BunkerStore>((set, get) => ({
         const state = get();
         if (state.isActive) {
             if (state.CheckingInterval) clearInterval(state.CheckingInterval);
-            set({ isActive: false, CheckingInterval: null });
+            set({
+                isActive: false,
+                CheckingInterval: null,
+                valuePerHours: 0
+            });
             state.saveToLocalStorage();
         } else {
             state.startProduction();

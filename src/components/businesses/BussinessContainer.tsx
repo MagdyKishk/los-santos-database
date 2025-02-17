@@ -7,7 +7,7 @@ interface BussinessContainerProps {
     bussinessName: string;
     bussinessDescription: string;
     bussinessImage: string;
-    valuePerHour?: number;
+    valuePerHour: number;
 
     isActive: boolean;
     toggleActive: () => void;
@@ -64,13 +64,13 @@ export default function BussinessContainer({
                             )}
                         />
                         <h1 className="text-lg font-bold text-white">{bussinessName}</h1>
-                        {
-                            valuePerHour &&
-                            <p className="text-green-500 text-sm font-semibold">
-                                {formatMoney(valuePerHour)}
-                                /h
-                            </p>
-                        }
+                        <p className={cn(
+                            "text-sm font-semibold",
+                            valuePerHour != 0 ? "text-green-500" : "text-red-500"
+                        )}>
+                            {formatMoney(valuePerHour)}
+                            /h
+                        </p>
                     </div>
                     <p className="text-xs text-neutral-400">{ bussinessDescription }</p>
                 </div>

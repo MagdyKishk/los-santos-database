@@ -4,10 +4,11 @@ import { formatTime } from "../../util/formatTime";
 import useAcidLab from "../../zustand/bussinesses/acidLab";
 import BussinessContainer from "./BussinessContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 import InputField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
+import SettingsContainer from "../general/settings/SettingsContainer";
 
 export default function AcidLab() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
@@ -102,63 +103,49 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-            <div className="bg-neutral-800 p-6 rounded-lg shadow-lg w-96 max-w-full relative">
-                {/* Close Button */}
-                <button
-                    className="absolute top-2 right-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
-                    onClick={closeSettings}
-                >
-                    <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
-                </button>
-
-                <h2 className="text-lg font-semibold text-white mb-4">Acid Lab Settings</h2>
-
-                <div className="flex flex-col gap-1">
-                    <div className="mb-2">
-                        <div className="flex items-center gap-2">
-                            <Checkbox value={hasEquipmentUpgrade} toggleFunc={() => toggleEquipmentUpgrade()} />
-                            <p>Equipment Upgrade</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Checkbox value={hasCustomName} toggleFunc={() => toggleCustomName()} />
-                            <p>Custom Name</p>
-                        </div>
-                    </div>
-                    
-                    {/* Supply Input */}
-                    <div className="flex gap-1">
-                        <InputField
-                            label="Supplies"
-                            placeholder="0 ... 100"
-                            value={editSupplyValue}
-                            onChange={setEditSupplyValue}
-                        />
-                        <button
-                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer"
-                            onClick={() => editSupplies(editSupplyValue)}
-                        >
-                            Save
-                        </button>
-                    </div>
-
-                    {/* Value Input */}
-                    <div className="flex gap-1">
-                        <InputField
-                            label="Value"
-                            placeholder={`0 ... ${maxValue}`}
-                            value={editProductValue}
-                            onChange={setEditProductValue}
-                        />
-                        <button
-                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer"
-                            onClick={() => editValue(editProductValue)}
-                        >
-                            Save
-                        </button>
-                    </div>
+        <SettingsContainer closeSettings={closeSettings} label="Acid Lab">
+            <div className="mb-2">
+                <div className="flex items-center gap-2">
+                    <Checkbox value={hasEquipmentUpgrade} toggleFunc={() => toggleEquipmentUpgrade()} />
+                    <p>Equipment Upgrade</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Checkbox value={hasCustomName} toggleFunc={() => toggleCustomName()} />
+                    <p>Custom Name</p>
                 </div>
             </div>
-        </div>
+            
+            {/* Supply Input */}
+            <div className="flex gap-1">
+                <InputField
+                    label="Supplies"
+                    placeholder="0 ... 100"
+                    value={editSupplyValue}
+                    onChange={setEditSupplyValue}
+                />
+                <button
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer"
+                    onClick={() => editSupplies(editSupplyValue)}
+                >
+                    Save
+                </button>
+            </div>
+
+            {/* Value Input */}
+            <div className="flex gap-1">
+                <InputField
+                    label="Value"
+                    placeholder={`0 ... ${maxValue}`}
+                    value={editProductValue}
+                    onChange={setEditProductValue}
+                />
+                <button
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer"
+                    onClick={() => editValue(editProductValue)}
+                >
+                    Save
+                </button>
+            </div>
+        </SettingsContainer>
     );
 }

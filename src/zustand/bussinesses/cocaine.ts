@@ -26,7 +26,7 @@ interface CocaineStore {
     updateEvery: number;
 
     hasEquipmentUpgrade: boolean,
-    hasStaffpgrade: boolean,
+    hasStaffUpgrade: boolean,
 
     toggleActive: () => void;
     startProduction: () => void;
@@ -68,13 +68,17 @@ const useCocaine = create<CocaineStore>((set, get) => ({
     updateEvery: 1,
 
     hasEquipmentUpgrade: false,
-    hasStaffpgrade: false,
+    hasStaffUpgrade: false,
 
     toggleActive: () => {
         const state = get();
         if (state.isActive) {
             if (state.CheckingInterval) clearInterval(state.CheckingInterval);
-            set({ isActive: false, CheckingInterval: null });
+            set({
+                isActive: false,
+                CheckingInterval: null,
+                valuePerHours: 0
+            });
             state.saveToLocalStorage();
         } else {
             state.startProduction();
@@ -140,21 +144,21 @@ const useCocaine = create<CocaineStore>((set, get) => ({
 
     toggleEquipmentUpgrade: (on) => {
         const currentState = get();
-        const { hasEquipmentUpgrade, hasStaffpgrade, currentValue } = currentState;
+        const { hasEquipmentUpgrade, hasStaffUpgrade, currentValue } = currentState;
 
         const newHasEquipmentUpgrade = on == undefined ? !hasEquipmentUpgrade : on;
 
         const newMaxValue = newHasEquipmentUpgrade
-            ? hasStaffpgrade ? 420_000 : 360_000
-            : hasStaffpgrade ? 360_000 : 300_000;
+            ? hasStaffUpgrade ? 420_000 : 360_000
+            : hasStaffUpgrade ? 360_000 : 300_000;
 
         const newMaxTtimeToFill = newHasEquipmentUpgrade
-            ? hasStaffpgrade ? 18_000_000 : 24_000_000
-            : hasStaffpgrade ? 24_000_000 : 30_000_000
+            ? hasStaffUpgrade ? 18_000_000 : 24_000_000
+            : hasStaffUpgrade ? 24_000_000 : 30_000_000
         
         const newMaxTimeToConvert = newHasEquipmentUpgrade
-            ? hasStaffpgrade ? 7_200_000 : 9_600_000
-            : hasStaffpgrade ? 4_800_000 : 6_000_000
+            ? hasStaffUpgrade ? 7_200_000 : 9_600_000
+            : hasStaffUpgrade ? 4_800_000 : 6_000_000
 
         const newRemainginToFill = (newMaxTtimeToFill * (1 - (currentValue / newMaxValue))); 
         const newRemainginToConvert = (newMaxTimeToConvert * (currentState.supplies / 100));
@@ -177,9 +181,9 @@ const useCocaine = create<CocaineStore>((set, get) => ({
     },
     toggleStaffUpgrade: (on?: boolean) => {
         const currentState = get();
-        const { hasStaffpgrade, hasEquipmentUpgrade, currentValue } = currentState;
+        const { hasStaffUpgrade, hasEquipmentUpgrade, currentValue } = currentState;
         
-        const newHasStaffpgrade = on === undefined ? !hasStaffpgrade : on;
+        const newHasStaffpgrade = on === undefined ? !hasStaffUpgrade : on;
         
         const newMaxValue = newHasStaffpgrade
             ? hasEquipmentUpgrade ? 420_000 : 360_000
@@ -206,7 +210,7 @@ const useCocaine = create<CocaineStore>((set, get) => ({
             maxTimeToConvert: newMaxTimeToConvert,
             finishFillingTime: newTimeToFill,
             finishConvertingTime: newTimeToConvert,
-            hasStaffpgrade: newHasStaffpgrade,
+            hasStaffUpgrade: newHasStaffpgrade,
             remainingFillingTime: newRemainginToFill,
             remainingConvertingTime: newRemainginToConvert,
         }))
@@ -262,7 +266,7 @@ const useCocaine = create<CocaineStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasStaffpgrade,
+            hasStaffUpgrade,
         } = get();
 
         const data = {
@@ -286,7 +290,7 @@ const useCocaine = create<CocaineStore>((set, get) => ({
             updateEvery,
 
             hasEquipmentUpgrade,
-            hasStaffpgrade,
+            hasStaffUpgrade,
         };
 
         localStorage.setItem("cocaine_data", JSON.stringify(data));
@@ -333,7 +337,7 @@ const useCocaine = create<CocaineStore>((set, get) => ({
                     lastUpdate: lastUpdate != undefined ? lastUpdate : state.lastUpdate,
                     updateEvery: updateEvery != undefined ? updateEvery : state.updateEvery,
                     hasEquipmentUpgrade: hasEquipmentUpgrade != undefined ? hasEquipmentUpgrade : state.hasEquipmentUpgrade,
-                    hasStaffpgrade: hasStaffpgrade != undefined ? hasStaffpgrade : state.hasStaffpgrade,
+                    hasStaffUpgrade: hasStaffpgrade != undefined ? hasStaffpgrade : state.hasStaffUpgrade,
                 }));
             }
         } catch (error) {
