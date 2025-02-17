@@ -7,7 +7,7 @@ import { faGear, faTimes } from "@fortawesome/free-solid-svg-icons";
 import InputField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
-import useCocaine from "../../zustand/bussinesses/Cocaine";
+import useCocaine from "../../zustand/bussinesses/cocaine";
 
 export default function Cocaine() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
