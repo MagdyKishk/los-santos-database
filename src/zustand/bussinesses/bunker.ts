@@ -100,6 +100,11 @@ const useBunker = create<BunkerStore>((set, get) => ({
                 if (get().supplies > 0 && get().currentValue < get().maxValue) {
                     get().updateProduction();
                     get().saveToLocalStorage();
+                } else {
+                    set((state) => ({
+                        ...state,
+                        valuePerHours: 0,
+                    }))
                 }
             }, 1000 * currentState.updateEvery),
         });
