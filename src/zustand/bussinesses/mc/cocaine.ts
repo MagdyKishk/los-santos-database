@@ -12,9 +12,9 @@ const useCocaine = createBusinessStore<CocaineUpgrades>(
     'The most profitable MC business, producing and selling cocaine. Requires resupplying and upgrades to maximize earnings.',
     {
         initialValues: {
-            maxValue: 525_000,
-            maxTimeToConvert: 7_200_000,
-            maxTimeToFill: 18_000_000,
+            maxValue: 405_000,
+            maxTimeToFill: 30_000_000,
+            maxTimeToConvert: 9_600_000,
         },
         getUpgradedValues: (upgrades) => {
             const maxValue = upgrades.hasEquipmentUpgrade.on

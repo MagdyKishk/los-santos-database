@@ -12,9 +12,9 @@ const useCounterFeit = createBusinessStore<CounterFeitUpgrades>(
     'Generates fake money for passive income. Decent mid-tier MC business that works best when combined with other revenue sources.',
     {
         initialValues: {
-            maxValue: 367_500,
-            maxTimeToFill: 19_200_000,
-            maxTimeToConvert: 9_600_000,
+            maxValue: 283_500,
+            maxTimeToFill: 28_800_000,
+            maxTimeToConvert: 7_200_000,
         },
         getUpgradedValues: (upgrades) => {
             const maxValue = upgrades.hasEquipmentUpgrade.on

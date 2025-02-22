@@ -12,9 +12,9 @@ const useMethLab = createBusinessStore<CocaineUpgrades>(
     'Produces methamphetamine for high payouts. A solid MC business that requires frequent restocking to maintain steady earnings.',
     {
         initialValues: {
-            maxValue: 446_250,
-            maxTimeToFill: 21_600_000,
-            maxTimeToConvert: 9_000_000,
+            maxValue: 344_240,
+            maxTimeToFill: 36_000_000,
+            maxTimeToConvert: 7_500_000,
         },
         getUpgradedValues: (upgrades) => {
             const maxValue = upgrades.hasEquipmentUpgrade.on

@@ -12,9 +12,9 @@ const useDocumentForgery = createBusinessStore<CocaineUpgrades>(
     'The least profitable MC business, producing fake documents. Useful only if linked to a nightclub for passive income.',
     {
         initialValues: {
-            maxValue: 157_500,
-            maxTimeToFill: 21_600_000,
-            maxTimeToConvert: 9_000_000,
+            maxValue: 121_500,
+            maxTimeToFill: 18_000_000,
+            maxTimeToConvert: 7_500_000,
         },
         getUpgradedValues: (upgrades) => {
             const maxValue = upgrades.hasEquipmentUpgrade.on

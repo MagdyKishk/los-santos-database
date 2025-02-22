@@ -12,9 +12,9 @@ const useWeedFarm = createBusinessStore<WeedUpgrades>(
     'A lower-tier MC business that produces marijuana. Profits are lower, but it provides a steady revenue stream when fully upgraded.',
     {
         initialValues: {
-            maxValue: 315_000,
-            maxTimeToFill: 19_200_000,
-            maxTimeToConvert: 12_000_000,
+            maxValue: 243_000,
+            maxTimeToFill: 28_800_000,
+            maxTimeToConvert: 9_000_000,
         },
         getUpgradedValues: (upgrades) => {
             const maxValue = upgrades.hasEquipmentUpgrade.on
