@@ -51,7 +51,7 @@ export default function MethLab() {
                         Supplies
                     </p>
                     <RangeBars bars={5} percentage={supplies / 100} className="flex-1" />
-                    <p className="w-25 text-sm jetbrains-mono">
+                    <p className="w-22 text-sm jetbrains-mono">
                         {supplies.toFixed(2)}%
                     </p>
                     <p className="w-fit jetbrains-mono text-sm">
@@ -63,7 +63,7 @@ export default function MethLab() {
                         Value
                     </p>
                     <RangeBars bars={5} percentage={currentValue/maxValue} className="flex-1" />
-                    <p className="w-25 text-sm jetbrains-mono">
+                    <p className="w-22 text-sm jetbrains-mono">
                         {formatMoney(currentValue)}/{formatMoney(maxValue)}
                     </p>
                     <p className="w-fit jetbrains-mono text-sm">
