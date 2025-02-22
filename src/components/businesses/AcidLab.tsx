@@ -5,7 +5,7 @@ import useAcidLab from "../../zustand/bussinesses/acidLab";
 import BussinessContainer from "./BussinessContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import InputField from "../general/input/InputField";
+import InputNumberField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
 import SettingsContainer from "../general/settings/SettingsContainer";
@@ -14,6 +14,10 @@ export default function AcidLab() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
     const {
         isActive,
+        
+        formatedName,
+        image,
+        description,
         
         supplies,
         
@@ -37,9 +41,9 @@ export default function AcidLab() {
         <BussinessContainer
             isActive={isActive}
             toggleActive={toggleActive}
-            bussinessName="Acid Lab"
-            bussinessImage="media/acid-lab.jpg"
-            bussinessDescription="Modifies and delivers vehicles for customers. Also allows for mini-heists called Robbery Contracts for extra income."
+            bussinessName={formatedName}
+            bussinessImage={image}
+            bussinessDescription={description}
             valuePerHour={valuePerHours}
         >
             <div className="mt-4 flex flex-col gap-1">
@@ -93,31 +97,34 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
         editSupplies,
         editValue,
 
-        hasCustomName,
-        toggleCustomName,
-
-        hasEquipmentUpgrade,
-        toggleEquipmentUpgrade
+        upgrades,
+        toggleUpgrade
     } = useAcidLab();
     const [editProductValue, setEditProductValue] = useState<number>(Number(currentValue.toFixed(2)));
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
+    const upgradesEntries = Object.entries(upgrades)
+
+    console.log(upgradesEntries)
 
     return (
         <SettingsContainer closeSettings={closeSettings} label="Acid Lab">
-            <div className="mb-2">
-                <div className="flex items-center gap-2">
-                    <Checkbox value={hasEquipmentUpgrade} toggleFunc={() => toggleEquipmentUpgrade()} />
-                    <p>Equipment Upgrade</p>
+            {
+                !!upgradesEntries.length &&
+                <div className="mb-2">
+                    {
+                        upgradesEntries.map(([upgrade, value], index) =>
+                            <div className="flex items-center gap-2" key={index}>
+                                <Checkbox value={value.on} toggleFunc={() => toggleUpgrade(upgrade)} />
+                                <p>{value.name}</p>
+                            </div>
+                        )
+                    }
                 </div>
-                <div className="flex items-center gap-2">
-                    <Checkbox value={hasCustomName} toggleFunc={() => toggleCustomName()} />
-                    <p>Custom Name</p>
-                </div>
-            </div>
-            
+            }
+
             {/* Supply Input */}
             <div className="flex gap-1">
-                <InputField
+                <InputNumberField
                     label="Supplies"
                     placeholder="0 ... 100"
                     value={editSupplyValue}
@@ -133,7 +140,7 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
 
             {/* Value Input */}
             <div className="flex gap-1">
-                <InputField
+                <InputNumberField
                     label="Value"
                     placeholder={`0 ... ${maxValue}`}
                     value={editProductValue}

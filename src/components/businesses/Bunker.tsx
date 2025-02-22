@@ -4,7 +4,7 @@ import { formatTime } from "../../util/formatTime";
 import BussinessContainer from "./BussinessContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import InputField from "../general/input/InputField";
+import InputNumberField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
 import useBunker from "../../zustand/bussinesses/bunker";
@@ -14,6 +14,10 @@ export default function Bunker() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
     const {
         isActive,
+
+        formatedName,
+        image,
+        description,
         
         supplies,
         
@@ -36,9 +40,9 @@ export default function Bunker() {
         <BussinessContainer
             isActive={isActive}
             toggleActive={toggleActive}
-            bussinessName="Bunker"
-            bussinessImage="media/bunker.jpg"
-            bussinessDescription="Produces and sells illegal weapons. A high-profit, low-maintenance business with strong payouts and passive income potential."
+            bussinessName={formatedName}
+            bussinessImage={image}
+            bussinessDescription={description}
             valuePerHour={valuePerHours}
         >
             <div className="mt-4 flex flex-col gap-1">
@@ -78,13 +82,13 @@ export default function Bunker() {
                 />
             </button>
             {openSettings &&
-                <AcidLabSettings closeSettings={() => setOpenSettings(false)} />
+                <BunkerSettings closeSettings={() => setOpenSettings(false)} />
             }
         </BussinessContainer>
     )
 }
 
-export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }) {
+export function BunkerSettings({ closeSettings }: { closeSettings: () => void }) {
     const {
         supplies,
         currentValue,
@@ -92,31 +96,32 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
         editSupplies,
         editValue,
 
-        hasStaffUpgrade,
-        toggleStaffUpgrade,
-
-        hasEquipmentUpgrade,
-        toggleEquipmentUpgrade
+        upgrades,
+        toggleUpgrade
     } = useBunker();
     const [editProductValue, setEditProductValue] = useState<number>(Number(currentValue.toFixed(2)));
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
+    const upgradesEntries = Object.entries(upgrades)
 
     return (
         <SettingsContainer closeSettings={closeSettings} label="Bunker">
-            <div className="mb-2">
-                <div className="flex items-center gap-2">
-                    <Checkbox value={hasEquipmentUpgrade} toggleFunc={() => toggleEquipmentUpgrade()} />
-                    <p>Equipment Upgrade</p>
+            {
+                !!upgradesEntries.length &&
+                <div className="mb-2">
+                    {
+                        upgradesEntries.map(([upgrade, value], index) =>
+                            <div className="flex items-center gap-2" key={index}>
+                                <Checkbox value={value.on} toggleFunc={() => toggleUpgrade(upgrade)} />
+                                <p>{value.name}</p>
+                            </div>
+                        )
+                    }
                 </div>
-                <div className="flex items-center gap-2">
-                    <Checkbox value={hasStaffUpgrade} toggleFunc={() => toggleStaffUpgrade()} />
-                    <p>Staff Upgrade</p>
-                </div>
-            </div>
-            
+            }
+
             {/* Supply Input */}
             <div className="flex gap-1">
-                <InputField
+                <InputNumberField
                     label="Supplies"
                     placeholder="0 ... 100"
                     value={editSupplyValue}
@@ -132,7 +137,7 @@ export function AcidLabSettings({ closeSettings }: { closeSettings: () => void }
 
             {/* Value Input */}
             <div className="flex gap-1">
-                <InputField
+                <InputNumberField
                     label="Value"
                     placeholder={`0 ... ${maxValue}`}
                     value={editProductValue}

@@ -1,16 +1,24 @@
+import { useEffect } from "react";
 import cn from "../../util/cn";
 import useOnline from "../../zustand/online";
 import AcidLab from "./AcidLab";
 import Bunker from "./Bunker";
 import Cocaine from "./Cocaine";
+import MethLab from "./MethLab";
+import CounterFeit from "./CounterFeit";
+import WeedFarm from "./WeedFarm";
+import DocumentForgery from "./DocumentForgery";
 
 interface BussinessManagerProps {
     className?: string
 }
 
 export default function BussinessManager({ className }: BussinessManagerProps) {
-    const { isOnline, toggleIsOnline } = useOnline();
+    const { isOnline, toggleIsOnline, loadFromLocalStorage } = useOnline();
 
+    useEffect(() => {
+        loadFromLocalStorage();
+    }, [loadFromLocalStorage])
 
     return (
         <div className={cn(
@@ -47,6 +55,10 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
                 <AcidLab />
                 <Bunker />
                 <Cocaine />
+                <MethLab />
+                <CounterFeit />
+                <WeedFarm />
+                <DocumentForgery />
             </div>
         </div>
     )

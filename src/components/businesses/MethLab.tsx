@@ -7,10 +7,10 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import InputNumberField from "../general/input/InputField";
 import RangeBars from "../general/range/RangeBars";
 import Checkbox from "../general/input/Checkbox";
-import useCocaine from "../../zustand/bussinesses/mc/cocaine";
 import SettingsContainer from "../general/settings/SettingsContainer";
+import useMethLab from "../../zustand/bussinesses/mc/methLab";
 
-export default function Cocaine() {
+export default function MethLab() {
     const [openSettings, setOpenSettings] = useState<boolean>(false)
     const {
         isActive,
@@ -30,7 +30,7 @@ export default function Cocaine() {
         remainingConvertingTime,
         remainingFillingTime,
         valuePerHours
-    } = useCocaine();
+    } = useMethLab();
 
     useEffect(() => {
         initBusiness()
@@ -82,13 +82,13 @@ export default function Cocaine() {
                 />
             </button>
             {openSettings &&
-                <CocaineSettings closeSettings={() => setOpenSettings(false)} />
+                <MethSettings closeSettings={() => setOpenSettings(false)} />
             }
         </BussinessContainer>
     )
 }
 
-export function CocaineSettings({ closeSettings }: { closeSettings: () => void }) {
+export function MethSettings({ closeSettings }: { closeSettings: () => void }) {
     const {
         supplies,
         currentValue,
@@ -97,7 +97,7 @@ export function CocaineSettings({ closeSettings }: { closeSettings: () => void }
         editValue,
         upgrades,
         toggleUpgrade
-    } = useCocaine();
+    } = useMethLab();
     const [editProductValue, setEditProductValue] = useState<number>(Number(currentValue.toFixed(2)));
     const [editSupplyValue, setEditSupplyValue] = useState<number>(Number(supplies.toFixed(2)));
     const upgradesEntries = Object.entries(upgrades)

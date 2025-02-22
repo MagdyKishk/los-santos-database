@@ -36,7 +36,7 @@ export default function BussinessContainer({
             "min-h-fit max-h-96",
             "bg-cover"
             )}
-            style={{backgroundImage: `url(${bussinessImage})`}}
+            style={{backgroundImage: `url(media/${bussinessImage})`}}
         >
             <div className={cn(
                 "w-full h-full",
