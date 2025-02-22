@@ -22,10 +22,11 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
 
     return (
         <div className={cn(
-            "h-2/3 md:h-full w-2/3 p-4",
+            "p-4",
             "bg-neutral-900",
             "rounded-md",
             "flex flex-col",
+            "h-full", // Add this to ensure full height
             className,
         )}>
             <div className="pb-4 px-2 flex items-center border-b border-neutral-800">
@@ -33,13 +34,14 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
                     "font-semibold tracking-wide",
                     "text-xl"
                 )}>
-                    Bussiness Manager
+                    Business Manager
                 </h1>
                 <button className={cn(
                         "ml-auto px-2 py-1 rounded-full",
                         "flex items-center justify-center",
                         "text-xs",
                         isOnline ? "bg-green-500" : "bg-red-500",
+                        "hover:opacity-90 transition-opacity", // Add hover effect
                         "cursor-pointer"
                     )}
                     onClick={toggleIsOnline}
@@ -48,9 +50,11 @@ export default function BussinessManager({ className }: BussinessManagerProps) {
                 </button>
             </div>
             <div className={cn(
-                "w-full",
-                "overflow-y-scroll scrollbar-hide",
-                "grid grid-cols-1 xl:grid-cols-2 gap-4 py-4",
+                "w-full flex-1",
+                "overflow-y-auto scrollbar-hide",
+                "grid grid-cols-1 2xl:grid-cols-2",
+                "gap-4 py-4",
+                "auto-rows-min",
             )}>
                 <AcidLab />
                 <Bunker />

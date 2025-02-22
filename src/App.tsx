@@ -15,8 +15,8 @@ function App() {
             "overflow-hidden",
             "text-neutral-200"
         )}>
-            <BussinessManager className="w-full lg:w-2/3" />
-            <TaskSchedular className="w-full lg:w-1/3" />
+            <BussinessManager className="w-full lg:w-2/3 h-2/3 lg:h-full" />
+            <TaskSchedular className="w-full lg:w-1/3 h-1/3 lg:h-full" />
         </div>
     )
 }

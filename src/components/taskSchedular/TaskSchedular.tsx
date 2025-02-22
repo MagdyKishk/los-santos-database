@@ -17,7 +17,7 @@ export default function TaskSchedular({ className }: TaskSchedularProps) {
     return (
         <div className={cn(
             "flex flex-col",
-            "h-2/3 md:h-full w-1/3 p-4",
+            "p-4",
             "bg-neutral-900",
             "rounded-md",
             className

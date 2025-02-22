@@ -33,7 +33,7 @@ export default function BussinessContainer({
             "relative",
             "bg-neutral-800",
             "rounded-md overflow-hidden",
-            "min-h-fit max-h-96",
+            "min-h-fit",
             "bg-cover"
             )}
             style={{backgroundImage: `url(media/${bussinessImage})`}}
